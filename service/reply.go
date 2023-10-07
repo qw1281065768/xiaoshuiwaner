@@ -24,6 +24,7 @@ func ReplyMessageHandler(rw http.ResponseWriter, req *http.Request) {
 	}
 	officialAccount := wc.GetOfficialAccount(cfg)
 
+	fmt.Println(req)
 	// 传入request和responseWriter
 	server := officialAccount.GetServer(req, rw)
 	//设置接收消息的处理方法
