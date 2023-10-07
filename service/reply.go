@@ -53,5 +53,6 @@ func ReplyMessageHandler(rw http.ResponseWriter, req *http.Request) {
 	}
 	fmt.Println(server.ResponseMsg)
 	//发送回复的消息
-	server.Send()
+	err = server.Send()
+	fmt.Println(err)
 }
