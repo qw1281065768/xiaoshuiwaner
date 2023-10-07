@@ -18,7 +18,7 @@ func ReplyMessageHandler(rw http.ResponseWriter, req *http.Request) {
 	cfg := &offConfig.Config{
 		AppID:     "wx4c448f0d8141b6e6",
 		AppSecret: "AAQ9G7sEAAABAAAAAADYEl7EIFIdKbnYY0AhZSAAAAAraAdzKm8i8JwFJ68cDOJBtIHsmv3F8e00LCv7f+tYviC+CNGw8id1pIHomelyP7+eaEYJe3Gq577QcgzWXoTs5Ak+WXMnG/pB5INCH3ZqUuGmKsY9XhzYleN6sVUQ2qyeOqHtN81coOUizp61GIVr7LtT347AcTgRHisbQZGQ",
-		Token:     "qw7843251",
+		//Token:     "qw7843251",
 		//EncodingAESKey: "xxxx",
 		Cache: memory,
 	}
@@ -35,6 +35,7 @@ func ReplyMessageHandler(rw http.ResponseWriter, req *http.Request) {
 	})
 
 	//处理消息接收以及回复
+	server.SkipValidate(true)
 	err := server.Serve()
 	if err != nil {
 		fmt.Println(err)
