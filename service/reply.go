@@ -2,6 +2,8 @@ package service
 
 import (
 	"fmt"
+	"io/ioutil"
+	"log"
 	"net/http"
 
 	"github.com/silenceper/wechat/v2"
@@ -24,7 +26,12 @@ func ReplyMessageHandler(rw http.ResponseWriter, req *http.Request) {
 	}
 	officialAccount := wc.GetOfficialAccount(cfg)
 
-	fmt.Println(req)
+	reqBody, err := ioutil.ReadAll(req.Body)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(string(reqBody))
+
 	// 传入request和responseWriter
 	server := officialAccount.GetServer(req, rw)
 	//设置接收消息的处理方法
@@ -39,12 +46,11 @@ func ReplyMessageHandler(rw http.ResponseWriter, req *http.Request) {
 
 	//处理消息接收以及回复
 	server.SkipValidate(true)
-	err := server.Serve()
+	err = server.Serve()
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println(server)
 	fmt.Println(server.ResponseMsg)
 	//发送回复的消息
 	server.Send()
