@@ -67,13 +67,13 @@ func ReplyMessageHandler(rw http.ResponseWriter, req *http.Request) {
 		Content:      fmt.Sprintf("[消息回复] - %s", time.Now().Format("2006-01-02 15:04:05")),
 	}
 
-	msg, err := xml.Marshal(&repTextMsg)
+	/*msg, err := xml.Marshal(&repTextMsg)
 	if err != nil {
 		fmt.Println("222", err)
 		return
-	}
+	}*/
 	server := officialAccount.GetServer(req, rw)
-	server.XML(msg)
+	server.XML(repTextMsg)
 
 	// 传入request和responseWriter
 
