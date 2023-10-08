@@ -59,7 +59,7 @@ func ReplyMessageHandler(rw http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	tmp := "<![CDATA[%s]>"
+	tmp := `<![CDATA[%s]>`
 
 	repTextMsg := WXRepTextMsg{
 		ToUserName:   fmt.Sprintf(tmp, input.FromUserName),
@@ -68,7 +68,7 @@ func ReplyMessageHandler(rw http.ResponseWriter, req *http.Request) {
 		MsgType:      fmt.Sprintf(tmp, "text"),
 		Content:      fmt.Sprintf(tmp, "1234"),
 	}
-
+	fmt.Println(fmt.Sprintf(tmp, input.FromUserName))
 	/*msg, err := xml.Marshal(&repTextMsg)
 	if err != nil {
 		fmt.Println("222", err)
