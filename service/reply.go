@@ -64,7 +64,7 @@ func ReplyMessageHandler(rw http.ResponseWriter, req *http.Request) {
 		FromUserName: input.ToUserName,
 		CreateTime:   time.Now().Unix(),
 		MsgType:      "text",
-		Content:      fmt.Sprintf("[消息回复] - %s", time.Now().Format("2006-01-02 15:04:05")),
+		Content:      "1234",
 	}
 
 	/*msg, err := xml.Marshal(&repTextMsg)
