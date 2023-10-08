@@ -1,16 +1,37 @@
 package service
 
 import (
+	"encoding/json"
+	"encoding/xml"
 	"fmt"
-	"io/ioutil"
-	"log"
-	"net/http"
-
 	"github.com/silenceper/wechat/v2"
 	"github.com/silenceper/wechat/v2/cache"
 	offConfig "github.com/silenceper/wechat/v2/officialaccount/config"
-	"github.com/silenceper/wechat/v2/officialaccount/message"
+	"io/ioutil"
+	"log"
+	"net/http"
+	"time"
 )
+
+type Message struct {
+	MsgId        int64  `json:"MsgId"`
+	Content      string `json:"Content"`
+	MsgType      string `json:"MsgType"`
+	CreateTime   int    `json:"CreateTime"`
+	FromUserName string `json:"FromUserName"`
+	ToUserName   string `json:"ToUserName"`
+}
+
+// WXRepTextMsg 微信回复文本消息结构体
+type WXRepTextMsg struct {
+	ToUserName   string
+	FromUserName string
+	CreateTime   int64
+	MsgType      string
+	Content      string
+	// 若不标记XMLName, 则解析后的xml名为该结构体的名称
+	XMLName xml.Name `xml:"xml"`
+}
 
 // ReplyMessageHandler 回复消息接口
 func ReplyMessageHandler(rw http.ResponseWriter, req *http.Request) {
@@ -31,9 +52,33 @@ func ReplyMessageHandler(rw http.ResponseWriter, req *http.Request) {
 		log.Fatal(err)
 	}
 	fmt.Println(string(reqBody))
+	input := &Message{}
+	err = json.Unmarshal(reqBody, input)
+	if err != nil {
+		fmt.Println("111", err)
+		return
+	}
+
+	repTextMsg := WXRepTextMsg{
+		ToUserName:   input.FromUserName,
+		FromUserName: input.ToUserName,
+		CreateTime:   time.Now().Unix(),
+		MsgType:      "text",
+		Content:      fmt.Sprintf("[消息回复] - %s", time.Now().Format("2006-01-02 15:04:05")),
+	}
+
+	msg, err := xml.Marshal(&repTextMsg)
+	if err != nil {
+		fmt.Println("222", err)
+		return
+	}
+	server := officialAccount.GetServer(req, rw)
+	server.XML(msg)
 
 	// 传入request和responseWriter
-	server := officialAccount.GetServer(req, rw)
+
+	/*server := officialAccount.GetServer(req, rw)
+
 	//设置接收消息的处理方法
 	server.SetMessageHandler(func(msg message.MixMessage) *message.Reply {
 		//TODO
@@ -54,5 +99,5 @@ func ReplyMessageHandler(rw http.ResponseWriter, req *http.Request) {
 	fmt.Println("999", server)
 	//发送回复的消息
 	err = server.Send()
-	fmt.Println("222", err)
+	fmt.Println("222", err)*/
 }
