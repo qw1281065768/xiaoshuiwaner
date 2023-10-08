@@ -48,11 +48,11 @@ func ReplyMessageHandler(rw http.ResponseWriter, req *http.Request) {
 	server.SkipValidate(true)
 	err = server.Serve()
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("111", err)
 		return
 	}
-	fmt.Println(server.ResponseMsg)
+	fmt.Println("999", server)
 	//发送回复的消息
 	err = server.Send()
-	fmt.Println(err)
+	fmt.Println("222", err)
 }
