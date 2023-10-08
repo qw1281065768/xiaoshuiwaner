@@ -2,11 +2,7 @@ package service
 
 import (
 	"encoding/json"
-	"encoding/xml"
 	"fmt"
-	"github.com/silenceper/wechat/v2"
-	"github.com/silenceper/wechat/v2/cache"
-	offConfig "github.com/silenceper/wechat/v2/officialaccount/config"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -30,12 +26,12 @@ type WXRepTextMsg struct {
 	MsgType      string
 	Content      string
 	// 若不标记XMLName, 则解析后的xml名为该结构体的名称
-	XMLName xml.Name `xml:"xml"`
+	//XMLName xml.Name `xml:"xml"`
 }
 
 // ReplyMessageHandler 回复消息接口
 func ReplyMessageHandler(rw http.ResponseWriter, req *http.Request) {
-	wc := wechat.NewWechat()
+	/*wc := wechat.NewWechat()
 	//这里本地内存保存access_token，也可选择redis，memcache或者自定cache
 	memory := cache.NewMemory()
 	cfg := &offConfig.Config{
@@ -45,7 +41,7 @@ func ReplyMessageHandler(rw http.ResponseWriter, req *http.Request) {
 		//EncodingAESKey: "xxxx",
 		Cache: memory,
 	}
-	officialAccount := wc.GetOfficialAccount(cfg)
+	officialAccount := wc.GetOfficialAccount(cfg)*/
 
 	reqBody, err := ioutil.ReadAll(req.Body)
 	if err != nil {
@@ -75,14 +71,15 @@ func ReplyMessageHandler(rw http.ResponseWriter, req *http.Request) {
 	}*/
 
 	// 设置响应头部，指定返回的内容类型为 JSON
-	//rw.Header().Set("Content-Type", "application/json")
+	rw.Header().Set("Content-Type", "application/json")
 
 	// 写入 JSON 数据到 ResponseWriter
-	//_, err = rw.Write(reqBody)
+	data, _ := json.Marshal(repTextMsg)
+	_, err = rw.Write(data)
 
-	server := officialAccount.GetServer(req, rw)
+	/*server := officialAccount.GetServer(req, rw)
 	fmt.Println(repTextMsg)
-	server.XML(repTextMsg)
+	server.XML(repTextMsg)*/
 
 	// 传入request和responseWriter
 
