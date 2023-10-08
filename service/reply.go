@@ -4,9 +4,13 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"fmt"
+	"github.com/silenceper/wechat/v2"
+	"github.com/silenceper/wechat/v2/cache"
+	offConfig "github.com/silenceper/wechat/v2/officialaccount/config"
 	"io/ioutil"
 	"log"
 	"net/http"
+	"time"
 )
 
 type Message struct {
@@ -31,7 +35,7 @@ type WXRepTextMsg struct {
 
 // ReplyMessageHandler 回复消息接口
 func ReplyMessageHandler(rw http.ResponseWriter, req *http.Request) {
-	/*wc := wechat.NewWechat()
+	wc := wechat.NewWechat()
 	//这里本地内存保存access_token，也可选择redis，memcache或者自定cache
 	memory := cache.NewMemory()
 	cfg := &offConfig.Config{
@@ -41,7 +45,7 @@ func ReplyMessageHandler(rw http.ResponseWriter, req *http.Request) {
 		//EncodingAESKey: "xxxx",
 		Cache: memory,
 	}
-	officialAccount := wc.GetOfficialAccount(cfg)*/
+	officialAccount := wc.GetOfficialAccount(cfg)
 
 	reqBody, err := ioutil.ReadAll(req.Body)
 	if err != nil {
@@ -55,13 +59,15 @@ func ReplyMessageHandler(rw http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	/*repTextMsg := WXRepTextMsg{
-		ToUserName:   input.FromUserName,
-		FromUserName: input.ToUserName,
+	tmp := "<![CDATA[%s]>"
+
+	repTextMsg := WXRepTextMsg{
+		ToUserName:   fmt.Sprintf(tmp, input.FromUserName),
+		FromUserName: fmt.Sprintf(tmp, input.ToUserName),
 		CreateTime:   time.Now().Unix(),
-		MsgType:      "text",
-		Content:      "1234",
-	}*/
+		MsgType:      fmt.Sprintf(tmp, "text"),
+		Content:      fmt.Sprintf(tmp, "1234"),
+	}
 
 	/*msg, err := xml.Marshal(&repTextMsg)
 	if err != nil {
@@ -70,14 +76,14 @@ func ReplyMessageHandler(rw http.ResponseWriter, req *http.Request) {
 	}*/
 
 	// 设置响应头部，指定返回的内容类型为 JSON
-	rw.Header().Set("Content-Type", "application/json")
+	//rw.Header().Set("Content-Type", "application/json")
 
 	// 写入 JSON 数据到 ResponseWriter
-	_, err = rw.Write(reqBody)
+	//_, err = rw.Write(reqBody)
 
-	/*server := officialAccount.GetServer(req, rw)
+	server := officialAccount.GetServer(req, rw)
 	fmt.Println(repTextMsg)
-	server.XML(repTextMsg)*/
+	server.XML(repTextMsg)
 
 	// 传入request和responseWriter
 
