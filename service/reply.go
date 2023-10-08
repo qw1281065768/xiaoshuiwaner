@@ -62,7 +62,7 @@ func ReplyMessageHandler(rw http.ResponseWriter, req *http.Request) {
 		FromUserName: input.ToUserName,
 		CreateTime:   time.Now().Unix(),
 		MsgType:      "text",
-		Content:      "1234",
+		Content:      "等我充值再回复\n        by zzb",
 	}
 	/*msg, err := xml.Marshal(&repTextMsg)
 	if err != nil {
