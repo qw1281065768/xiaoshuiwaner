@@ -73,6 +73,7 @@ func ReplyMessageHandler(rw http.ResponseWriter, req *http.Request) {
 		return
 	}*/
 	server := officialAccount.GetServer(req, rw)
+	fmt.Println(repTextMsg)
 	server.XML(repTextMsg)
 
 	// 传入request和responseWriter
